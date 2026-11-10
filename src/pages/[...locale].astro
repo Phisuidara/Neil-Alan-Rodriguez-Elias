@@ -1,0 +1,32 @@
+---
+// This page intentionally contains no visual logic. It builds one page per
+// locale (default locale at the site root, others under /<locale>/), resolves
+// `activeDesign` to a layout component and hands it that locale's CV content.
+// To change the site's design, edit `activeDesign` in src/designs/index.ts.
+// To add a new design, add its key to `designLayouts` below.
+import type { GetStaticPaths } from "astro";
+import { activeDesign } from "@/designs";
+import { getCv } from "@/content";
+import { defaultLocale, locales, type Locale } from "@/i18n";
+import MinimalLayout from "@/designs/minimal/layout.astro";
+
+export const getStaticPaths = (() =>
+  locales.map((locale) => ({
+    params: { locale: locale === defaultLocale ? undefined : locale },
+    props: { locale },
+  }))) satisfies GetStaticPaths;
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const designLayouts = {
+  minimal: MinimalLayout,
+} as const;
+
+const Layout = designLayouts[activeDesign];
+---
+
+<Layout cv={getCv(locale)} locale={locale} />

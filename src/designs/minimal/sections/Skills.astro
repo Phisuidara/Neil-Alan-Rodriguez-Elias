@@ -1,0 +1,48 @@
+---
+import type { SkillGroup } from "@/types/cv";
+import { useTranslations, type Locale } from "@/i18n";
+
+interface Props {
+  groups: SkillGroup[];
+  locale: Locale;
+}
+
+const { groups, locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+{groups.length > 0 && (
+  <section aria-labelledby="skills-heading" class="container">
+    <h2 id="skills-heading">{t.skills}</h2>
+    <div class="skill-groups">
+      {groups.map((group) => (
+        <div class="skill-group">
+          <h3>{group.category}</h3>
+          <ul class="tag-list" aria-label={t.skillsIn(group.category)}>
+            {group.skills.map((skill) => (
+              <li class="tag">
+                {skill.name}
+                {skill.level ? ` · ${t.skillLevel[skill.level]}` : ""}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .skill-groups {
+    display: grid;
+    gap: var(--space-4);
+  }
+
+  .skill-group h3 {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    margin: 0 0 var(--space-2);
+  }
+</style>

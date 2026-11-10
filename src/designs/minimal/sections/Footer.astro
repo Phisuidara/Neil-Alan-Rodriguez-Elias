@@ -1,0 +1,24 @@
+---
+import type { Profile } from "@/types/cv";
+import { useTranslations, type Locale } from "@/i18n";
+
+interface Props {
+  profile: Profile;
+  locale: Locale;
+}
+
+const { profile, locale } = Astro.props;
+const t = useTranslations(locale);
+const year = new Date().getFullYear();
+---
+
+<footer class="container site-footer">
+  <p class="muted mono">{t.footer(profile.fullName, year)}</p>
+</footer>
+
+<style>
+  .site-footer {
+    padding-block: var(--space-5) var(--space-6);
+    font-size: 0.8125rem;
+  }
+</style>

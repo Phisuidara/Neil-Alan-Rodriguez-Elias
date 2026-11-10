@@ -1,0 +1,33 @@
+---
+// Design-agnostic language switcher. Designs style it through the `class` prop
+// and the `.lang-switch*` hooks; it carries no visual styles of its own.
+import { localeMeta, locales, useTranslations, type Locale } from "@/i18n";
+import { localePath } from "@/utils/url";
+
+interface Props {
+  locale: Locale;
+  class?: string;
+}
+
+const { locale, class: className } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<nav class:list={["lang-switch", className]} aria-label={t.languageSwitcher}>
+  <ul class="lang-switch-list">
+    {locales.map((option) => (
+      <li>
+        <a
+          class="lang-switch-link"
+          href={localePath(option)}
+          hreflang={localeMeta[option].htmlLang}
+          lang={localeMeta[option].htmlLang}
+          aria-current={option === locale ? "page" : undefined}
+          title={localeMeta[option].label}
+        >
+          {localeMeta[option].short}
+        </a>
+      </li>
+    ))}
+  </ul>
+</nav>

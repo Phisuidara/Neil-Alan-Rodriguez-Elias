@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://phisuidara.github.io/Neil-Alan-Rodriguez-Elias/sitemap-index.xml

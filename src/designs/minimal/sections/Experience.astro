@@ -1,0 +1,64 @@
+---
+import type { ExperienceEntry } from "@/types/cv";
+import { formatDateRange } from "@/utils/formatDate";
+import { useTranslations, type Locale } from "@/i18n";
+
+interface Props {
+  entries: ExperienceEntry[];
+  locale: Locale;
+}
+
+const { entries, locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+{entries.length > 0 && (
+  <section aria-labelledby="experience-heading" class="container">
+    <h2 id="experience-heading">{t.experience}</h2>
+    {entries.map((entry) => (
+      <article class="entry">
+        <div class="entry-header">
+          <h3>
+            {entry.role} ·{" "}
+            {entry.url ? (
+              <a class="link" href={entry.url}>
+                {entry.company}
+              </a>
+            ) : (
+              entry.company
+            )}
+          </h3>
+          <span class="entry-dates">{formatDateRange(entry.startDate, entry.endDate, locale)}</span>
+        </div>
+        {entry.location && <p class="muted">{entry.location}</p>}
+        <p>{entry.summary}</p>
+        {entry.highlights && entry.highlights.length > 0 && (
+          <ul class="entry-highlights">
+            {entry.highlights.map((highlight) => (
+              <li>{highlight}</li>
+            ))}
+          </ul>
+        )}
+        {entry.technologies && entry.technologies.length > 0 && (
+          <ul class="tag-list" aria-label={t.technologiesUsed}>
+            {entry.technologies.map((tech) => (
+              <li class="tag">{tech}</li>
+            ))}
+          </ul>
+        )}
+      </article>
+    ))}
+  </section>
+)}
+
+<style>
+  h3 {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .entry-highlights + .tag-list,
+  p + .tag-list {
+    margin-top: var(--space-2);
+  }
+</style>

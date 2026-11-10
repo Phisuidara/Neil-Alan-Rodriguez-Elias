@@ -1,0 +1,47 @@
+---
+import type { CvData } from "@/types/cv";
+import { localeMeta, useTranslations, type Locale } from "@/i18n";
+import SEO from "@/components/SEO.astro";
+import { withBase } from "@/utils/url";
+import "@/styles/reset.css";
+import "./tokens.css";
+import Hero from "./sections/Hero.astro";
+import Experience from "./sections/Experience.astro";
+import Projects from "./sections/Projects.astro";
+import Education from "./sections/Education.astro";
+import Skills from "./sections/Skills.astro";
+import Extras from "./sections/Extras.astro";
+import Footer from "./sections/Footer.astro";
+
+interface Props {
+  cv: CvData;
+  locale: Locale;
+}
+
+const { cv, locale } = Astro.props;
+const t = useTranslations(locale);
+---
+
+<!doctype html>
+<html lang={localeMeta[locale].htmlLang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+    <SEO profile={cv.profile} locale={locale} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">
+      {t.skipToContent}
+    </a>
+    <main id="main-content">
+      <Hero profile={cv.profile} locale={locale} />
+      <Experience entries={cv.experience} locale={locale} />
+      <Projects projects={cv.projects} locale={locale} />
+      <Education entries={cv.education} locale={locale} />
+      <Skills groups={cv.skills} locale={locale} />
+      <Extras certifications={cv.certifications} languages={cv.languages} locale={locale} />
+    </main>
+    <Footer profile={cv.profile} locale={locale} />
+  </body>
+</html>
