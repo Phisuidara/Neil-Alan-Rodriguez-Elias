@@ -2,7 +2,8 @@
 import type { CvData } from "@/types/cv";
 import { localeMeta, useTranslations, type Locale } from "@/i18n";
 import SEO from "@/components/SEO.astro";
-import { withBase } from "@/utils/url";
+// `?url` makes Vite emit a content-hashed file, so browsers refetch the icon whenever it changes.
+import faviconUrl from "@/assets/favicon.svg?url";
 import "@/styles/reset.css";
 import "./tokens.css";
 import Hero from "./sections/Hero.astro";
@@ -27,7 +28,7 @@ const t = useTranslations(locale);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href={withBase("favicon.svg")} />
+    <link rel="icon" type="image/svg+xml" href={faviconUrl} />
     <SEO profile={cv.profile} locale={locale} />
   </head>
   <body>
